@@ -16,6 +16,7 @@ export default class App {
         this.port = PORT || 8000;
         this.initializeMiddlewares()
         this.initializeRoutes(routes)
+        this.initializeErrorHandling()
     }
 
     public listen(): void {
@@ -33,7 +34,7 @@ export default class App {
 
     private initializeRoutes(routes: IRoute[]): void {
         routes.forEach(route => {
-            this.app.use("/api/v1", route.router)
+            this.app.use(route.router)
         })
     }  
 
