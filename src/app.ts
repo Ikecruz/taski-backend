@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express, { Application, Request } from "express";
+import { StatusCodes } from 'http-status-codes';
 import { PORT } from './config';
 import { IRoute } from './interfaces/route.interface';
 import errorMiddleware from './middlewares/error.middleware';
@@ -33,6 +34,8 @@ export default class App {
     }
 
     private initializeRoutes(routes: IRoute[]): void {
+        this.app.get('/', (req, res) => res.status(StatusCodes.OK).send("Welcome to my backend application"))
+
         routes.forEach(route => {
             this.app.use(route.router)
         })
