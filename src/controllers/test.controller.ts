@@ -5,7 +5,9 @@ export default class TestController {
 
     public testServices: TestService = new TestService()
 
-    public getHello (request: Request, response: Response, next: NextFunction) {
+    constructor () {}
+
+    public getHello = (request: Request, response: Response, next: NextFunction) => {
         response.status(200).send(this.testServices.sayHello("Dave"))
     }
 
