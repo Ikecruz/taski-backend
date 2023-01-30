@@ -6,7 +6,7 @@ import { sanitize } from "class-sanitizer";
 import HttpException from "../utils/exception";
 import ErrorMessage from "../enums/validation.error.enums";
 
-type ErrorMessage = keyof typeof ErrorMessage
+type ErrorMessage =  (typeof ErrorMessage)[keyof typeof ErrorMessage]
 
 const dtoValidationMiddleware =
     (
