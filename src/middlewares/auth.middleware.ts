@@ -10,7 +10,7 @@ export const authMiddleware:RequestHandler = async (
     next: NextFunction 
 ) => {
 
-    const token = req.headers.authorization
+    const token = req.headers.authorization?.split(' ')[1]
     const userService = new UserService()
     const authService = new AuthService()
 
