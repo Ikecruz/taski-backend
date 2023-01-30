@@ -1,23 +1,28 @@
 import cors from 'cors';
 import express, { Application, Request } from "express";
 import { StatusCodes } from 'http-status-codes';
-import { PORT } from './config';
+import { Mongoose } from 'mongoose';
+import { DB_URL, PORT } from './config';
 import { IRoute } from './interfaces/route.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import morganMiddleware from './middlewares/morgan.middleware';
 import { logger } from './utils/logger';
+import db from "./database"
 
 export default class App {
 
     public app: Application;
     public port: string | number;
+    private db: typeof db;
 
     constructor(routes: IRoute[]) {
         this.app = express();
         this.port = PORT || 8000;
+        this.db = db;
         this.initializeMiddlewares()
         this.initializeRoutes(routes)
         this.initializeErrorHandling()
+        this.initializeDatabase()
     }
 
     public listen(): void {
@@ -39,10 +44,23 @@ export default class App {
         routes.forEach(route => {
             this.app.use(route.router)
         })
-    }  
+    }
 
     private initializeErrorHandling() {
         this.app.use(errorMiddleware)
+    }
+
+    private async initializeDatabase() {
+
+        try {
+
+            await this.db.connect()
+            logger.info(`🛢️  [Database]: Database connected`)
+
+        } catch (error) {
+            logger.error(`🛢️  [Database]: Database connection failed`)
+        }
+
     }
 
 }
