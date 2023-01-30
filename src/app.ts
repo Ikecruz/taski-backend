@@ -7,17 +7,18 @@ import { IRoute } from './interfaces/route.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import morganMiddleware from './middlewares/morgan.middleware';
 import { logger } from './utils/logger';
+import db from "./database"
 
 export default class App {
 
     public app: Application;
     public port: string | number;
-    private mongoose: Mongoose;
+    private db: typeof db;
 
     constructor(routes: IRoute[]) {
         this.app = express();
         this.port = PORT || 8000;
-        this.mongoose = new Mongoose()
+        this.db = db;
         this.initializeMiddlewares()
         this.initializeRoutes(routes)
         this.initializeErrorHandling()
@@ -53,8 +54,7 @@ export default class App {
 
         try {
 
-            this.mongoose.set('strictQuery', false)
-            await this.mongoose.connect(DB_URL as string)
+            await this.db.connect()
             logger.info(`🛢️  [Database]: Database connected`)
 
         } catch (error) {
