@@ -1,8 +1,7 @@
 import cors from 'cors';
 import express, { Application, Request } from "express";
 import { StatusCodes } from 'http-status-codes';
-import { Mongoose } from 'mongoose';
-import { DB_URL, PORT } from './config';
+import { PORT } from './config';
 import { IRoute } from './interfaces/route.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import morganMiddleware from './middlewares/morgan.middleware';
@@ -46,10 +45,6 @@ export default class App {
         })
     }
 
-    private initializeErrorHandling() {
-        this.app.use(errorMiddleware)
-    }
-
     private async initializeDatabase() {
 
         try {
@@ -61,6 +56,10 @@ export default class App {
             logger.error(`🛢️  [Database]: Database connection failed`)
         }
 
+    }
+
+    private async initializeErrorHandling() {
+        this.app.use(errorMiddleware)
     }
 
 }
