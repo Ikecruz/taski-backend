@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import HttpException from "../utils/exception";
 import { logger } from "../utils/logger";
 
-
 const errorMiddleware = (
   error: HttpException,
   req: Request,
@@ -16,6 +15,7 @@ const errorMiddleware = (
     logger.error(
       `[${req.method}] ${req.path}  >> StatusCode:: ${status}, Message:: ${message}`
     );
+
     res.status(status).json({ message });
   } catch (error) {
     next(error);
