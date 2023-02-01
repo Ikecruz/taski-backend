@@ -17,8 +17,13 @@ export default class AuthRoute implements IRoute{
     private initializeRoutes() {
 
         this.router.post(
-            `${this.path}/login`, 
+            `${this.path}/register`, 
             dtoValidationMiddleware(CreateUserDto, "body", ErrorMessage.FIELDS),
+            this.controller.register
+        )
+
+        this.router.get(
+            `${this.path}/login`,
             this.controller.login
         )
 
