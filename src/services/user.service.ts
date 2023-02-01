@@ -1,11 +1,15 @@
-import { Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import db from "../database"
 import HttpException from '../utils/exception';
 
 export default class UserService {
 
-    private ormService = db.getClient()
+    private ormService: PrismaClient;
+
+    constructor () {
+        this.ormService = db.getClient()
+    }
 
     public async findByEmail (email: string) {
         const user = await this.ormService.user.findFirst({

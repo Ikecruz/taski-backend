@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum otpType {
+  register
+  login
+  email
+}
+
 model User {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   user_name  String    @unique
@@ -18,14 +24,14 @@ model User {
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
 
-  otp_id String @unique
+  otp_id String? @unique
   otp    Otp[]
 }
 
 model Otp {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   token      String
-  used       String
+  used       Boolean   @default(false)
   type       String
   user_id    String
   user       User?     @relation(fields: [user_id], references: [otp_id])
